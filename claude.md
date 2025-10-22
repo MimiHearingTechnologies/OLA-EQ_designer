@@ -13,4 +13,4 @@ todo after we have tested this: also have a button to optionally process an iut 
 this is for windows pc as default but should work on macbook.
 design should be simple, elegant, and not too colourful, for engineers to use. gui should handle resize.
 always test this works first.
-do not generate a venv, just install packages if needed, but make a requirements.txt to show packages we need.
+do not generate a venv, just install packages if needed, but make a requirements.txt to show packages we need.2

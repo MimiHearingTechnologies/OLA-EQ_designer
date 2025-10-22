@@ -107,12 +107,39 @@ This ensures the output has minimum group delay, which is desirable for real-tim
 
 ## Testing
 
-Run the test script to verify mask generation:
+### Mask Generation Test
+
+Verify the EQ mask generation algorithm:
 ```bash
 python test_mask_generation.py
 ```
 
 This tests the algorithm with the bass filter preset and exports test files.
+
+### Audio Filter Test
+
+Apply exported EQ masks to audio signals to validate filtering:
+```bash
+# Test with white noise
+python test_audio_filter.py --noise --header test.h --output filtered_output.wav
+
+# Test with audio file
+python test_audio_filter.py --input audio.wav --header test.h --output filtered.wav
+```
+
+**Features:**
+- White noise generation for testing
+- Audio file loading with resampling to 16 kHz
+- Frequency-domain filtering using overlap-add (50% overlap)
+- Stereo output: Left channel = normalized original (-12 dB), Right channel = filtered
+- Supports exported .h files with interleaved format
+
+**Command-line options:**
+- `--noise` - Generate 5 seconds of white noise
+- `--input <file>` - Input audio WAV file
+- `--header <file>` - EQ mask header file (default: test.h)
+- `--output <file>` - Output stereo WAV file
+- `--duration <sec>` - Duration for white noise (default: 5.0)
 
 ## Platform Support
 
