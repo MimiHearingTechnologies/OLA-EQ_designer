@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mask EQ Designer - Web</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Plotly.js for interactive plotting -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Mask EQ Designer</h1>
+            <button id="btn-info" class="btn-info" title="How it works">ℹ️</button>
+        </div>
+        <p class="subtitle">Minimum-phase frequency-domain EQ mask generator for embedded DSP</p>
+
+        <!-- Frequency Response Plot -->
+        <div id="freq-plot" class="plot-container"></div>
+
+        <!-- EQ Sliders -->
+        <div class="sliders-container" id="sliders-container">
+            <!-- Sliders will be generated dynamically -->
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls-container">
+            <button id="btn-flat" class="btn">Flat</button>
+            <button id="btn-bass" class="btn">Bass Filter</button>
+            <button id="btn-load" class="btn">Load File</button>
+            <button id="btn-export" class="btn btn-primary">Export</button>
+            <input type="file" id="file-input" accept=".txt" style="display: none;">
+        </div>
+
+        <!-- Configuration Info -->
+        <div class="config-info">
+            <span id="config-display">SR: 16000Hz | FFT: 256 | Bins: 129</span>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>Usage</h3>
+            <ul>
+                <li><strong>Sliders:</strong> Adjust gain for each frequency band</li>
+                <li><strong>Interactive Plot:</strong> Click and drag orange dots to adjust EQ</li>
+                <li><strong>Flat:</strong> Reset all bands to 0 dB</li>
+                <li><strong>Bass Filter:</strong> Apply preset bass boost curve</li>
+                <li><strong>Load File:</strong> Load frequency/gain curve from text file (format: freq_hz gain_db)</li>
+                <li><strong>Export:</strong> Download .h header file and PNG plot</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2>How It Works</h2>
+
+            <p>
+                This tool generates <strong>minimum-phase frequency-domain EQ masks</strong> for embedded DSP applications.
+                It converts user-defined magnitude responses (specified via sliders or loaded from text files) into
+                complex FFT coefficients that can be applied directly in the frequency domain. The output is a
+                129-bin complex mask (DC to Nyquist) suitable for real-time convolution or overlap-add filtering
+                at 16 kHz sample rate with 256-point FFTs.
+            </p>
+
+            <p>
+                The <strong>minimum-phase reconstruction algorithm</strong> uses the cepstral method: (1) interpolate
+                target gains to FFT bin frequencies, (2) convert dB to linear magnitude, (3) compute log magnitude,
+                (4) take IFFT to obtain the real cepstrum, (5) apply causal windowing (zero negative time, double
+                positive time) to enforce minimum phase, (6) FFT back to the log spectrum, and (7) exponentiate
+                to yield the complex mask. This ensures minimum group delay while matching the target magnitude response.
+            </p>
+
+            <p>
+                <strong>Interactive controls:</strong> Adjust gain for 14 octave-spaced frequency bands (85 Hz to 8 kHz)
+                using vertical sliders or by clicking and dragging the orange target dots on the frequency response plot.
+                The cyan curve shows the actual minimum-phase response. Export generates a C header file with interleaved
+                real/imaginary pairs (format: <code>[real0, imag0, real1, imag1, ...]</code>) and a PNG plot comparing
+                target vs. actual response.
+            </p>
+
+            <p>
+                <strong>Technical specifications:</strong> Sample rate = 16000 Hz, FFT size = 256, Output bins = 129
+                (N/2 + 1), Frequency resolution = 62.5 Hz/bin, Nyquist = 8000 Hz. The DSP algorithm runs entirely
+                client-side using a custom Cooley-Tukey radix-2 FFT implementation in JavaScript, with no external
+                dependencies beyond Plotly.js for visualization.
+            </p>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="eq_designer.js"></script>
+</body>
+</html>
