@@ -44,14 +44,14 @@ Alternatively, you can make the web folder the root of a gh-pages branch.
 
 ## GUI Controls
 
-- **Sliders**: Adjust gain for each frequency band (-18 dB to +6 dB)
+- **Sliders**: Adjust gain for each frequency band (-18 dB to +18 dB)
 - **Interactive Plot**: Click and drag orange target dots on the frequency response plot to adjust gain values
   - Click on any orange dot to select it
   - While holding the mouse button, drag up/down to adjust the gain
   - Release to finish adjusting
   - The cursor will change to ↕ (vertical resize) during drag
 - **Flat Button**: Reset all bands to 0 dB
-- **Bass Filter Button**: Apply preset bass boost curve (+6 dB @ 100 Hz → -6 dB @ 8 kHz)
+- **Bass Filter Button**: Apply preset bass boost curve (+18 dB @ 100 Hz → -18 dB @ 8 kHz)
 - **Load File Button**: Load frequency/gain curve from text file
 - **Export Button**: Download .h header file and PNG plot image
 
@@ -96,7 +96,7 @@ const Config = {
     FFT_SIZE: 256,         // FFT size (output: FFT_SIZE/2 + 1 bins)
     NUM_BANDS: 14,         // Number of graphic EQ bands
     MIN_GAIN_DB: -18.0,    // Minimum slider gain
-    MAX_GAIN_DB: 6.0       // Maximum slider gain
+    MAX_GAIN_DB: 18.0       // Maximum slider gain
 };
 ```
 

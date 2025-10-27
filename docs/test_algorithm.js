@@ -16,7 +16,7 @@ const Config = {
     FFT_SIZE: 256,
     NUM_BANDS: 14,
     MIN_GAIN_DB: -18.0,
-    MAX_GAIN_DB: 6.0,
+    MAX_GAIN_DB: 18.0,
 
     get numBins() {
         return this.FFT_SIZE / 2 + 1;
