@@ -9,13 +9,14 @@
  * - Interactive dot dragging on frequency response plot
  * - Minimum-phase response generation using cepstral method
  * - Export to C header file format
+ * - Export frequency response and time-domain impulse response plots
  * - Load curves from text files
  * - Preset curves (Flat, Bass Filter)
  *
  * Example usage:
  *   Open index.html in a web browser
  *   Adjust sliders or drag orange dots on the plot
- *   Click Export to download .h file and PNG image
+ *   Click Export to download .h file and PNG images
  */
 
 // ============================================================================
@@ -809,7 +810,72 @@ class MaskEQDesignerApp {
             });
         }, 100);
 
-        alert('Exported eq_mask.h and eq_mask.png');
+        // Export impulse response plot
+        setTimeout(() => {
+            this.exportImpulseResponse(complexMask);
+        }, 200);
+
+        alert('Exported eq_mask.h, eq_mask.png, and eq_mask_impulse.png');
+    }
+
+    /**
+     * Export time-domain impulse response plot
+     */
+    exportImpulseResponse(complexMask) {
+        // Perform IFFT to get time-domain impulse response
+        const impulseResponse = FFT.irfft(complexMask);
+
+        // Create time axis in milliseconds
+        const timeMs = impulseResponse.map((_, i) => i * 1000.0 / Config.SAMPLE_RATE);
+
+        // Create Plotly trace
+        const trace = {
+            x: timeMs,
+            y: impulseResponse,
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: 'rgb(31, 119, 180)', width: 1.5 },
+            name: 'Impulse Response'
+        };
+
+        // Create layout
+        const layout = {
+            title: 'EQ Mask: Time-Domain Impulse Response',
+            xaxis: {
+                title: 'Time (ms)',
+                gridcolor: 'rgba(128, 128, 128, 0.3)'
+            },
+            yaxis: {
+                title: 'Amplitude',
+                gridcolor: 'rgba(128, 128, 128, 0.3)',
+                zeroline: true,
+                zerolinecolor: 'rgba(0, 0, 0, 0.3)',
+                zerolinewidth: 1
+            },
+            plot_bgcolor: '#1e1e1e',
+            paper_bgcolor: '#2b2b2b',
+            font: { color: 'white' }
+        };
+
+        // Create a temporary div for the impulse plot
+        const tempDiv = document.createElement('div');
+        tempDiv.style.width = '1000px';
+        tempDiv.style.height = '600px';
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.left = '-9999px';
+        document.body.appendChild(tempDiv);
+
+        // Plot and download
+        Plotly.newPlot(tempDiv, [trace], layout).then(() => {
+            Plotly.downloadImage(tempDiv, {
+                format: 'png',
+                width: 1000,
+                height: 600,
+                filename: 'eq_mask_impulse'
+            }).then(() => {
+                document.body.removeChild(tempDiv);
+            });
+        });
     }
 
     /**
