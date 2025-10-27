@@ -37,7 +37,7 @@ python mask_eq_designer.py
 
 ### GUI Controls
 
-- **Sliders**: Adjust gain for each frequency band (-18 dB to +6 dB)
+- **Sliders**: Adjust gain for each frequency band (-18 dB to +18 dB)
 - **Interactive Dots**: Click and drag orange target dots on the frequency response plot to adjust gain values
 - **Flat Button**: Reset all bands to 0 dB
 - **Bass Filter Button**: Apply preset bass boost curve (+6 dB @ 100 Hz → -6 dB @ 8 kHz)
@@ -77,7 +77,7 @@ SAMPLE_RATE = 16000    # Sample rate in Hz
 FFT_SIZE = 256         # FFT size (output: FFT_SIZE/2 + 1 bins)
 NUM_BANDS = 14         # Number of graphic EQ bands
 MIN_GAIN_DB = -18.0    # Minimum slider gain
-MAX_GAIN_DB = 6.0      # Maximum slider gain
+MAX_GAIN_DB = 18.0     # Maximum slider gain
 ```
 
 ## Technical Details

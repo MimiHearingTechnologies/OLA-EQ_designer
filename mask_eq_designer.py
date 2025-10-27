@@ -20,7 +20,7 @@ Default parameters:
 - Sample rate: 16000 Hz
 - FFT size: 256 (output: 129 bins)
 - Number of EQ bands: 14
-- Slider range: -18 dB to +6 dB
+- Slider range: -18 dB to +18 dB
 """
 
 import customtkinter as ctk
@@ -44,7 +44,7 @@ class Config:
     FFT_SIZE = 256              # FFT size (output will be FFT_SIZE/2 + 1 bins)
     NUM_BANDS = 14              # Number of graphic EQ bands
     MIN_GAIN_DB = -18.0         # Minimum slider gain in dB
-    MAX_GAIN_DB = 6.0           # Maximum slider gain in dB
+    MAX_GAIN_DB = 18.0          # Maximum slider gain in dB
 
     # GUI Settings
     WINDOW_WIDTH = 1200
@@ -278,7 +278,7 @@ class MaskEQDesignerApp:
             slider = ctk.CTkSlider(
                 slider_container,
                 from_=self.config.MIN_GAIN_DB,  # Bottom of slider (-18 dB)
-                to=self.config.MAX_GAIN_DB,     # Top of slider (+6 dB)
+                to=self.config.MAX_GAIN_DB,     # Top of slider (+18 dB)
                 orientation="vertical",
                 height=200,
                 command=lambda val, idx=i: self.on_slider_change(idx, val)
