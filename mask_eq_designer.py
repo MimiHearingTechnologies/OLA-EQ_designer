@@ -8,6 +8,7 @@ used in embedded DSP applications. Features include:
 - Real-time frequency response visualization
 - Minimum-phase response generation using cepstral method
 - Export to C header file for embedded systems (interleaved real/imag format)
+- Export frequency response and time-domain impulse response plots
 - Load target curves from text files
 - Preset curves (Flat, Bass Filter)
 
@@ -466,7 +467,7 @@ class MaskEQDesignerApp:
             messagebox.showerror("Error", f"Failed to load file: {str(e)}")
 
     def export_mask(self):
-        """Export EQ mask to .h file and save plot as PNG"""
+        """Export EQ mask to .h file and save frequency response and impulse response plots as PNG"""
         # Ask for filename
         filename = filedialog.asksaveasfilename(
             title="Save EQ mask as",
@@ -509,8 +510,34 @@ class MaskEQDesignerApp:
             fig_export.savefig(png_filename, dpi=150, bbox_inches='tight')
             plt.close(fig_export)
 
+            # Generate time-domain impulse response plot
+            impulse_png_filename = os.path.splitext(filename)[0] + "_impulse.png"
+
+            # Create full symmetric spectrum for IFFT
+            full_spectrum = np.concatenate([complex_mask, np.conj(complex_mask[-2:0:-1])])
+
+            # IFFT to get time-domain impulse response
+            impulse_response = np.fft.ifft(full_spectrum).real
+
+            # Create impulse response plot
+            fig_impulse = plt.figure(figsize=(10, 6))
+            ax_impulse = fig_impulse.add_subplot(111)
+
+            # Time axis in milliseconds
+            time_ms = np.arange(len(impulse_response)) * 1000.0 / self.config.SAMPLE_RATE
+
+            ax_impulse.plot(time_ms, impulse_response, 'b-', linewidth=1.5)
+            ax_impulse.set_xlabel('Time (ms)')
+            ax_impulse.set_ylabel('Amplitude')
+            ax_impulse.set_title('EQ Mask: Time-Domain Impulse Response')
+            ax_impulse.grid(True, alpha=0.3)
+            ax_impulse.axhline(y=0, color='k', linewidth=0.5, alpha=0.3)
+
+            fig_impulse.savefig(impulse_png_filename, dpi=150, bbox_inches='tight')
+            plt.close(fig_impulse)
+
             messagebox.showinfo("Success",
-                              f"Exported:\n{os.path.basename(filename)}\n{os.path.basename(png_filename)}")
+                              f"Exported:\n{os.path.basename(filename)}\n{os.path.basename(png_filename)}\n{os.path.basename(impulse_png_filename)}")
 
         except Exception as e:
             messagebox.showerror("Error", f"Failed to export: {str(e)}")

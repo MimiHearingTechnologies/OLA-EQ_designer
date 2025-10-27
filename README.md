@@ -11,7 +11,7 @@ A graphical equalizer application for designing minimum-phase frequency-domain E
 - **Preset curves**: Flat, Bass Filter
 - **Load curves from text files** (freq_hz gain_db format)
 - **Export to C header files** (.h) with 129 complex FFT bins in interleaved format
-- **PNG plot generation** showing target vs actual response
+- **PNG plot generation** showing frequency response and time-domain impulse response
 - **Configurable parameters**: Sample rate, FFT size, number of bands
 
 ## Installation
@@ -66,7 +66,9 @@ Example: `test_bass_filter.txt`
 float eq_mask[258] = {...};  // [real0, imag0, real1, imag1, ...]
 ```
 
-**PNG image**: Visual comparison of target vs actual magnitude response
+**PNG images**:
+- `filename.png` - Frequency response showing target vs actual magnitude
+- `filename_impulse.png` - Time-domain impulse response
 
 ## Configuration
 
