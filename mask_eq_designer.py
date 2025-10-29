@@ -110,6 +110,7 @@ class EQMaskGenerator:
         min_phase_cepstrum = np.zeros_like(cepstrum)
         min_phase_cepstrum[0] = cepstrum[0]  # DC
         min_phase_cepstrum[1:self.config.FFT_SIZE//2] = 2 * cepstrum[1:self.config.FFT_SIZE//2]  # Positive freqs
+        min_phase_cepstrum[self.config.FFT_SIZE//2] = cepstrum[self.config.FFT_SIZE//2]  # Nyquist
 
         # Transform back to get minimum phase spectrum
         min_phase_log_spectrum = np.fft.fft(min_phase_cepstrum)

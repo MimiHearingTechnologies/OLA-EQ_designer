@@ -254,6 +254,7 @@ class EQMaskGenerator {
         for (let i = 1; i < this.config.FFT_SIZE / 2; i++) {
             minPhaseCepstrum[i] = 2 * cepstrum[i];
         }
+        minPhaseCepstrum[this.config.FFT_SIZE / 2] = cepstrum[this.config.FFT_SIZE / 2];  // Nyquist
         // Note: negative frequencies remain zero
 
         // Transform back to get minimum phase log spectrum
