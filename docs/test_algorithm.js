@@ -15,8 +15,8 @@ const Config = {
     SAMPLE_RATE: 16000,
     FFT_SIZE: 256,
     NUM_BANDS: 14,
-    MIN_GAIN_DB: -18.0,
-    MAX_GAIN_DB: 18.0,
+    MIN_GAIN_DB: -24.0,
+    MAX_GAIN_DB: 24.0,
 
     get numBins() {
         return this.FFT_SIZE / 2 + 1;

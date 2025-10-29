@@ -173,8 +173,8 @@ To customize the application, edit:
        SAMPLE_RATE: 16000,    // Change sample rate
        FFT_SIZE: 256,         // Change FFT size
        NUM_BANDS: 14,         // Change number of sliders
-       MIN_GAIN_DB: -18.0,    // Change slider range
-       MAX_GAIN_DB: 18.0
+       MIN_GAIN_DB: -24.0,    // Change slider range
+       MAX_GAIN_DB: 24.0
    };
    ```
 
