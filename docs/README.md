@@ -6,7 +6,7 @@ This is a pure JavaScript port of the Python CustomTkinter version, requiring no
 
 ## Features
 
-- **14-band graphic equalizer** with octave-spaced frequency bands (85 Hz - 8 kHz)
+- **32-band graphic equalizer** (configurable 4-64 bands) with log-spaced frequency bands (85 Hz - 8 kHz)
 - **Interactive target dot dragging** on frequency response plot - click orange dots to adjust EQ
 - **Real-time frequency response visualization** using Plotly.js
 - **Minimum-phase response generation** using cepstral method (FFT-based)
@@ -94,9 +94,9 @@ Default parameters (can be modified in `eq_designer.js`):
 const Config = {
     SAMPLE_RATE: 16000,    // Sample rate in Hz
     FFT_SIZE: 256,         // FFT size (output: FFT_SIZE/2 + 1 bins)
-    NUM_BANDS: 14,         // Number of graphic EQ bands
-    MIN_GAIN_DB: -18.0,    // Minimum slider gain
-    MAX_GAIN_DB: 18.0       // Maximum slider gain
+    NUM_BANDS: 32,         // Number of graphic EQ bands (default, user-configurable 4-64)
+    MIN_GAIN_DB: -24.0,    // Minimum slider gain
+    MAX_GAIN_DB: 24.0      // Maximum slider gain
 };
 ```
 

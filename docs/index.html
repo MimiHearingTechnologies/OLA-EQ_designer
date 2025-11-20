@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mask EQ Designer - Web</title>
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
     <!-- Plotly.js for interactive plotting -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
@@ -36,6 +36,10 @@
         <!-- Configuration Info -->
         <div class="config-info">
             <span id="config-display">SR: 16000Hz | FFT: 256 | Bins: 129</span>
+            <div style="margin-top: 10px;">
+                <label for="band-count-input" style="margin-right: 8px;">Frequency Bands:</label>
+                <input type="number" id="band-count-input" min="4" max="64" value="32" style="width: 60px; padding: 4px; background: #2b2b2b; color: white; border: 1px solid #555; border-radius: 4px;">
+            </div>
         </div>
 
         <!-- Instructions -->
@@ -75,7 +79,7 @@
             </p>
 
             <p>
-                <strong>Interactive controls:</strong> Adjust gain for 14 octave-spaced frequency bands (85 Hz to 8 kHz)
+                <strong>Interactive controls:</strong> Adjust gain for frequency bands (default 32, configurable 4-64) spanning 85 Hz to 8 kHz
                 using vertical sliders or by clicking and dragging the orange target dots on the frequency response plot.
                 The cyan curve shows the actual minimum-phase response. Export generates a C header file with interleaved
                 real/imaginary pairs (format: <code>[real0, imag0, real1, imag1, ...]</code>) and a PNG plot comparing
@@ -92,6 +96,6 @@
     </div>
 
     <!-- Custom JavaScript -->
-    <script src="eq_designer.js?v=4"></script>
+    <script src="eq_designer.js?v=5"></script>
 </body>
 </html>

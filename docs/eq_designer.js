@@ -26,7 +26,7 @@
 const Config = {
     SAMPLE_RATE: 16000,
     FFT_SIZE: 256,
-    NUM_BANDS: 14,
+    NUM_BANDS: 32,
     MIN_GAIN_DB: -24.0,
     MAX_GAIN_DB: 24.0,
 
@@ -477,6 +477,11 @@ class MaskEQDesignerApp {
                 this.closeInfoModal();
             }
         });
+
+        // Band count input handler
+        document.getElementById('band-count-input').addEventListener('change', (e) => {
+            this.updateBandCount(parseInt(e.target.value));
+        });
     }
 
     /**
@@ -485,6 +490,45 @@ class MaskEQDesignerApp {
     onSliderChange(index, value) {
         this.bandGains[index] = value;
         document.getElementById(`gain-label-${index}`).textContent = `${value.toFixed(1)} dB`;
+        this.updatePlot();
+    }
+
+    /**
+     * Update number of frequency bands
+     * @param {number} newBandCount - New number of bands
+     */
+    updateBandCount(newBandCount) {
+        // Validate input
+        if (newBandCount < 4 || newBandCount > 64 || isNaN(newBandCount)) {
+            alert('Band count must be between 4 and 64');
+            document.getElementById('band-count-input').value = this.config.NUM_BANDS;
+            return;
+        }
+
+        // Save current state
+        const oldFreqs = [...this.bandFreqs];
+        const oldGains = [...this.bandGains];
+
+        // Update config
+        this.config.NUM_BANDS = newBandCount;
+
+        // Regenerate band frequencies
+        this.bandFreqs = this.generateBandFrequencies();
+
+        // Interpolate old gains to new frequencies
+        this.bandGains = this.eqGenerator.interpolate(this.bandFreqs, oldFreqs, oldGains);
+
+        // Reinitialize sliders
+        this.initSliders();
+
+        // Update all slider values and labels
+        for (let i = 0; i < this.config.NUM_BANDS; i++) {
+            document.getElementById(`slider-${i}`).value = this.bandGains[i];
+            document.getElementById(`gain-label-${i}`).textContent =
+                `${this.bandGains[i].toFixed(1)} dB`;
+        }
+
+        // Update plot
         this.updatePlot();
     }
 
